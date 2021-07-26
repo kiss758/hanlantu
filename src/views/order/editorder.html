@@ -1,0 +1,827 @@
+<div>
+    <!-- 订单信息 -->
+    <script type="text/html">
+    </script>
+    <!-- 订单状态按钮 -->
+    <div class="order-header">
+        <p>
+            <script type="text/html" template>
+            <pre class="layui-code" lay-title="JavaScript" lay-skin="notepad">
+              {{d.params.order_status}}: 订单编号:{{d.params.order_coding}}
+            </pre>
+            </script>
+        </p>
+
+        <div class="layui-form" style="display: flex;">
+
+            <input type="text" name="auditId" hidden>
+            <div class="permission_btn executive_director_btn">
+                <div>
+                    <button type="button" name="auditing_type" value="1" class="layui-btn layui-btn-sm">主管审核通过</button>
+                    <button type="button" name="auditing_type" value="2" class="layui-btn layui-btn-sm">主管拒绝通过</button>
+                    <div>
+                        <label for="" class="layui-label" style="width: 100px;">拒绝原因</label>
+                        <input type="text" name="reject_reason" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="permission_btn gift_officer_btn">
+                <div>
+                    <button type="button" name="auditing_type" value="1" class="layui-btn layui-btn-sm">礼品员审核通过</button>
+                    <button type="button" name="auditing_type" value="2" class="layui-btn layui-btn-sm">礼品员拒绝通过</button>
+                    <div>
+                        <label for="" class="layui-label" style="width: 100px;">拒绝原因</label>
+                        <input type="text" name="reject_reason" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="permission_btn teller_btn">
+                <div>
+                    <button type="button" name="auditing_type" value="1" class="layui-btn layui-btn-sm">出纳审核通过</button>
+                    <button type="button" name="auditing_type" value="2" class="layui-btn layui-btn-sm">出纳审核拒绝</button>
+                    <button type="button" name="auditing_type" value="3"
+                        class="layui-btn layui-btn-sm">出纳确认收款后期发货</button>
+                    <div>
+                        <label for="" class="layui-label" style="width: 100px;">拒绝原因</label>
+                        <input type="text" name="reject_reason" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="permission_btn shipment_btn">
+                <button type="button" class="layui-btn layui-btn-sm">发货</button>
+            </div>
+
+            <div class="permission_btn modify_express_order_btn">
+                <button type="button" class="layui-btn layui-btn-sm">修改单号</button>
+            </div>
+
+            <div class="permission_btn second_payment_btn" style="margin: 0 5px;">
+                <button lay-submit lay-filter="LAY-user-second_payment_btn-submit" type="button"
+                    class="layui-btn layui-btn-sm">二次收款</button>
+            </div>
+
+            <div class="permission_btn cancel_collection_btn" style="margin: 0 5px;">
+                <button lay-submit lay-filter="LAY-user-cancel_collection_btn-submit" type="button"
+                    class="layui-btn layui-btn-sm">取消代收</button>
+            </div>
+
+            <div class="permission_btn rejected_btn" style="margin: 0 5px;">
+                <button lay-submit lay-filter="LAY-user-rejected_btn-submit" type="button"
+                    class="layui-btn layui-btn-sm layui-btn-danger">拒收按钮</button>
+            </div>
+
+            <div class="permission_btn warehouse_receipt_btn" style="margin: 0 5px;">
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-warm">仓库确认收货</button>
+            </div>
+
+            <div class="permission_btn rejected" style="margin: 0 5px;">
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-warm">出纳确认退款</button>
+            </div>
+
+            <div class="permission_btn tuihuo_btn" style="margin: 0 5px;">
+                <button lay-submit lay-filter="LAY-user-tuihuo_btn-submit" type="button"
+                    class="layui-btn layui-btn-sm layui-btn-danger">退货订单</button>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- 订单状态按钮 -->
+    <!-- 订单信息 -->
+
+    <!-- 会员信息 -->
+    <div class="memberinfo">
+
+        <div class="layui-form" lay-filter="layuiadmin-form-member" style="padding: 20px 30px 0 0">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>会员信息</legend>
+            </fieldset>
+            <div class="layui-row layui-col-space10">
+                <input type="text" name="auditId" hidden>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" disabled name="phone" id="phone" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" disabled name="name" id="name" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">其他方式</label>
+                        <div class="layui-input-inline">
+                            <input type="text" disabled name="other_contact" id="other_contact" autocomplete="off"
+                                class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">微信号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" disabled name="wechat" id="wechat" autocomplete="off"
+                                class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">出生日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" disabled name="birth" id="birth" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户来源</label>
+                        <div class="layui-input-inline">
+                            <select disabled name="customer_source" id="customer_source"> </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户类型</label>
+                        <div class="layui-input-inline">
+                            <select disabled name="customer_type" id="customer_type"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">拓展时间</label>
+                        <div class="layui-input-inline">
+                            <input disabled type="text" name="topcustomer_date" id="topcustomer_date" autocomplete="off"
+                                class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">QQ号码</label>
+                        <div class="layui-input-inline">
+                            <input disabled type="text" name="qq_number" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">性别</label>
+                        <div class="layui-input-inline">
+                            <select disabled name="gender" id="gender"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">推广人</label>
+                        <div class="layui-input-inline">
+                            <select disabled name="recommenders" id="recommenders"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">会员归属号</label>
+                        <div class="layui-input-inline">
+                            <select disabled name="belonging_id" id="belonging_id"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm6">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">城市</label>
+                        <div class="layui-input-inline">
+                            <input disabled type="text" name="wechat_city" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm9">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">地址</label>
+                        <div class="layui-input-block">
+                            <input disabled type="text" name="address" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm9">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <input disabled type="text" name="notes" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm9">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">生日礼品</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="yyy" lay-skin="switch" lay-text="ON|OFF" checked>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm9">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">中秋礼品</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="aaa" lay-skin="switch" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 会员信息 -->
+
+    <!-- 出货单 -->
+    <div class="memberinfo">
+
+        <div class="layui-form" lay-filter="layuiadmin-form-member" style="padding: 20px 30px 0 0">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>出货单</legend>
+            </fieldset>
+            <div class="layui-row layui-col-space10">
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机号</label>
+                        <div class="layui-input-inline">
+                            <input type="tel" disabled name="order_phone" lay-verify="required|phone" autocomplete="off"
+                                placeholder="请输入手机号" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收货人</label>
+                        <div class="layui-input-inline">
+                            <input type="text" disabled name="order_name" lay-verify="required" autocomplete="off"
+                                class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm9">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收货地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" disabled name="customer_detailed_address" lay-verify="required"
+                                autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <!-- 物料采购申请单 -->
+                <div class="layui-col-sm12">
+                    <div class="layui-form-item">
+                        <div class="layui-col-md12">
+                            <div class="layui-panel" id="panel">
+                                <div style="padding:30px 15px;">
+                                    <div style="margin-bottom: 15px;">
+                                        <div>
+                                            <label class="layui-form-label">总计金额:</label>
+                                            <div class="layui-input-inline">
+                                                <input disabled type="text" name="order_product_amount"
+                                                    autocomplete="off" class="layui-input order_product_amount">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="layui-form-label">总计数量:</label>
+                                            <div class="layui-input-inline">
+                                                <input disabled type="text" name="product_quantity" autocomplete="off"
+                                                    class="layui-input product_quantity">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <table id="OrderModelList" cellspacing="0" cellpadding="0" style="width:100%;"
+                                    class="layui-form layui-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 6%;">序号</th>
+                                            <th style="width: 30%;">商品名称</th>
+                                            <th style="width: 7%;">单位</th>
+                                            <th style="width: 7%;">数量</th>
+                                            <th style="width: 11%;">单价</th>
+                                            <th style="width: 11%;">金额</th>
+                                            <th style="width: 7%;">赠品</th>
+                                            <th style="width: 15%;">赠品原因</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="render"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm12">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">积分使用</label>
+                        <div class="layui-input-block">
+                            <input type="text" disabled name="use_integral_value" autocomplete="off"
+                                class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">订单金额</label>
+                        <div class="layui-input-inline">
+                            <input type="text" disabled name="order_amount" id="aaa" autocomplete="off"
+                                class="layui-input order_amount">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">付款方式</label>
+                        <div class="layui-input-inline">
+                            <select disabled name="paymenttype_name" id="paymenttype_name"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">定金</label>
+                        <div class="layui-input-inline">
+                            <input disabled type="text" name="advance_payment" autocomplete="off"
+                                class="layui-input advance_payment">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">代收金额</label>
+                        <div class="layui-input-inline">
+                            <input disabled type="text" name="collection_amount" autocomplete="off"
+                                class="layui-input collection_amount">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">提现手续费</label>
+                        <div class="layui-input-inline">
+                            <input disabled type="text" name="tx_handling_fee" autocomplete="off"
+                                class="layui-input tx_handling_fee">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">提现金额</label>
+                        <div class="layui-input-inline">
+                            <input disabled type="text" name="tx_true_amount" autocomplete="off"
+                                class="layui-input tx_true_amount">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收款时间:</label>
+                        <div class="layui-input-inline">
+                            <input disabled type="text" name="collection_date" class="layui-input" id="collection_date"
+                                value="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">套装信息</label>
+                        <div class="layui-input-inline">
+                            <input disabled type="text" name="suit_information" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">业绩归属</label>
+                        <div class="layui-input-inline">
+                            <select disabled name="performance_attribution" id="performance_attribution">
+                                <option value="">请选择</option>
+                                <option value="电商客服">电商客服</option>
+                                <option value="微信客服">微信客服</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发送短信?</label>
+                        <div class="layui-input-block">
+                            <input disabled type="radio" name="send_message" value="0" title="是" checked="">
+                            <input disabled type="radio" name="send_message" value="1" title="否">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">等通知发货</label>
+                        <div class="layui-input-block">
+                            <input disabled type="radio" name="what_notification_shipment" value="0" title="是"
+                                checked="">
+                            <input disabled type="radio" name="what_notification_shipment" value="1" title="否">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm12">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">付款备注</label>
+                        <div class="layui-input-inline">
+                            <input disabled type="text" name="payment_notes" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">快递公司</label>
+                        <div class="layui-input-inline">
+                            <select name="express_company_name" id="express_company_name"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">快递单号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="express_number" autocomplete="off" class="layui-input">
+                        </div>
+                        <button type="button" class="permission_btn shipment_btn  layui-btn layui-btn-warm">发货</button>
+                        <button type="button" name="query" class="layui-btn layui-btn-normal query">查询</button>
+                    </div>
+                </div>
+                <div class="layui-col-sm3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">共享客服</label>
+                        <div class="layui-input-inline">
+                            <select disabled name="True_name" id="True_name"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm9">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <input disabled type="text" name="order_notes" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 出货单 -->
+
+    <script>
+        layui.use(["admin", "form", "element", "laydate", "upload"], function () {
+            let $ = layui.$,
+                form = layui.form,
+                admin = layui.admin,
+                element = layui.element,
+                upload = layui.upload,
+                laydate = layui.laydate;
+            laydate.render({
+                elem: "#collection_date"
+                , value: admin.dateFormat()
+                , isInitValue: true
+            });
+            form.render();
+
+
+            //提交取消代收信息
+            form.on("submit(LAY-user-cancelcollectionpayment-submit)", function (data, index) {
+                var field = data.field;
+                admin.req({
+                    moduleurl: "Cancelcollection/add_do",
+                    type: "POST",
+                    data: field,
+                    done: function (res) {
+                        admin.layer(res.msg);
+                        layui.table.reload("LAY-user-back-order");
+                        // layer.closeAll('dialog'); //关闭所有页面层
+                        // layer.close(layer.index); 
+                        orderById(field.order_id);
+                    },
+                });
+            });
+
+            function orderById(id) {
+                if (id == undefined || id == "") {
+                    return false;
+                }
+                admin.req({
+                    moduleurl: "Order/show",
+                    async: true,
+                    data: { id },
+                    done: (res) => {
+                        const { phone, name, other_contact, wechat, birth, address, notes, topcustomer_date, customer_source, customer_type, gender, belonging, recommenders, qq_number, wechat_city } = res.data.member
+                        const { orderproduct, order_phone, order_name, order_address, use_integral_value, order_product_amount, product_quantity, order_amount, payment_type, advance_payment, collection_amount, tx_handling_fee, tx_true_amount, suit_information, performance_attribution, payment_notes, express_company, shared_customer_service, order_notes, permisssion_btn, id, express_number } = res.data
+                        const { Expresscompany_list } = res.otherdata
+                        let expOpt = `<option selected="" value=""></option>`
+                        Expresscompany_list.map((exp) => {
+                            expOpt += `<option value="${exp.express_company_name}">${exp.express_company_name}</option>`;
+                        })
+                        $("input[name='auditId']").val(id)
+                        $("#express_company_name").html(expOpt)
+                        // 会员基本信息14
+                        form.val("layuiadmin-form-member", {
+                            "auditId": id,
+                            phone,
+                            name,
+                            other_contact,
+                            wechat,
+                            birth,
+                            address,
+                            notes,
+                            qq_number,
+                            wechat_city,
+                            topcustomer_date,
+                            // 出货信息
+                            order_phone,
+                            order_name,
+                            order_address,
+                            use_integral_value,
+                            order_product_amount,
+                            product_quantity,
+                            order_amount,
+                            advance_payment,
+                            collection_amount,
+                            tx_handling_fee,
+                            tx_true_amount,
+                            suit_information,
+                            payment_notes,
+                            order_notes,
+                            express_number,
+                            express_company_name,
+                        })
+                        $("select[name='customer_source']").html(`<option value="${customer_source}">${customer_source}</option>`);
+                        $("select[name='customer_type']").html(`<option value="${customer_type}">${customer_type}</option>`);
+                        $("select[name='gender']").html(`<option value="${gender}">${gender}</option>`);
+                        $("select[name='belonging_id']").html(`<option value="${belonging}">${belonging}</option>`);
+                        $("select[name='recommenders']").html(`<option value="${recommenders}">${recommenders}</option>`);
+
+                        // 出货信息
+                        $("select[name='paymenttype_name']").html(`<option value="${payment_type}">${payment_type}</option>`);
+                        $("select[name='express_company_name']").val(express_company);
+                        $("select[name='True_name']").html(`<option value="${shared_customer_service}">${shared_customer_service}</option>`);
+                        orderproduct.map(item => {
+                            $("#render").append(
+                                `
+                                  <tr>
+                                        <td><input name="serial_number[]" disabled type="text" class="layui-input" value=""></td>
+                                        <td><input  disabled type="text" class="layui-input" value="${item.product_name}"></td>
+                                        <td><input disabled type="text" class="layui-input" value="${item.unit}"></td>
+                                        <td><input min=1   type="number" disabled class="layui-input quantity" value="${item.quantity}"></td>
+                                        <td><input  disabled type="text" class="layui-input unit_price"  value="${item.unit_price}"> </td>
+                                        <td><input disabled type="text" class="layui-input total_price"  value="${item.total_price}"> </td>
+                                        <td><input  disabled type="text" class="layui-input"  value="${item.giveaway}"> </td>
+                                        <td><input  disabled type="text" class="layui-input"  value="${item.giftreason}"> </td>
+                                   </tr>
+                                `
+                            )
+                        })
+
+                        //先隐藏所有的权限按钮
+                        $(".permission_btn").each(function () { $(this).hide(); });
+
+                        //展示
+                        $.each(permisssion_btn, function (i, v) {
+                            $(`.${v}`).show();
+                        })
+                        form.render("select");
+                        Recosting();
+                    }
+                })
+            }
+            //重排数量序号
+            function Recosting() {
+                var k = 1;
+                $("input[name='serial_number[]']").each(function () { $(this).attr('value', k); k = ++k; });
+            };
+            //主管审核
+            $('.executive_director_btn button').click(function () {
+                const auditing_type = $(this).val();
+                const id = $("input[name='auditId']").val();
+                const reject_reason = $(".executive_director_btn input[name='reject_reason']").val();
+                admin.req({
+                    moduleurl: "Order/executive_director_auditing",
+                    data: { auditing_type, id, reject_reason },
+                    done: (res) => {
+                        admin.layer(res.msg);
+                        layui.table.reload("LAY-user-back-order"); //重载表格
+                        layer.closeAll('page'); //关闭所有页面层
+                    }
+                })
+            });
+            // 礼品员审核
+            $('.gift_officer_btn button').click(function () {
+                const auditing_type = $(this).val();
+                const id = $("input[name='auditId']").val();
+                const reject_reason = $(".gift_officer_btn input[name='reject_reason']").val();
+                admin.req({
+                    moduleurl: "Order/gift_officer_auditing",
+                    data: { auditing_type, id, reject_reason, },
+                    done: (res) => {
+                        admin.layer(res.msg);
+                        layui.table.reload("LAY-user-back-order"); //重载表格
+                        layer.closeAll('page'); //关闭所有页面层
+                        parent.location.reload();
+                    }
+                })
+            });
+            // 待出纳审核
+            $('.teller_btn button').click(function () {
+                const auditing_type = $(this).val();
+                const id = $("input[name='auditId']").val();
+                const reject_reason = $(".gift_officer_btn input[name='reject_reason']").val();
+                const collection_date = $("input[name='collection_date']").val();
+                admin.req({
+                    moduleurl: "Order/teller_auditing",
+                    data: { auditing_type, id, reject_reason, collection_date },
+                    done: (res) => {
+                        admin.layer(res.msg);
+                        layui.table.reload("LAY-user-back-order"); //重载表格
+                        layer.closeAll('page'); //关闭所有页面层
+                    }
+                })
+            });
+            // 待发货
+            $('.shipment_btn').click(function () {
+                sendGoods()
+            })
+            $('.warehouse_receipt_btn').click(function () {
+                const order_id = $("input[name='auditId']").val();
+                layer.confirm('您确定收到货物了吗？收到货物库存自动添加哦', {
+                    btn: ['确定', '取消']
+                }, function (index, layero) {
+                    admin.req({
+                        moduleurl: "Rejected/warehouse_receipt_do",
+                        type: "POST",
+                        data: { order_id },
+                        done: function (res) {
+                            admin.layer(res.msg);
+                            layui.table.reload("LAY-user-back-order");
+                            layer.close(index);
+                        },
+                    });
+                });
+            })
+            // 修改单号
+            $('.modify_express_order_btn').click(function () {
+                editNumberNo()
+            })
+            // 订单金额
+            $("body").on("input propertychange", ".order_amount", function () {
+                $(".collection_amount").val($(this).val() - $(".advance_payment").val())
+            });
+            // 定金金额
+            $("body").on("input propertychange", ".advance_payment", function () {
+                $(".collection_amount").val($(".order_amount").val() - $(this).val())
+            });
+            // 提现金额
+            $("body").on("input propertychange", ".tx_true_amount", function () {
+                $(".tx_handling_fee").val($(".advance_payment").val() - $(this).val())
+            });
+            function sendGoods() {
+                const id = $("input[name='auditId']").val();
+                const express_company = $("select[name='express_company_name']").val();
+                const express_number = $("input[name='express_number']").val();
+                admin.req({
+                    moduleurl: `Order/send_out_goods`,
+                    type: "POST",
+                    data: { id, express_company, express_number },
+                    done: (res) => {
+                        admin.layer(res.msg);
+                        layui.table.reload("LAY-user-back-order"); //重载表格
+                        // layer.closeAll('page'); //关闭所有页面层
+                        orderById(id);
+                    }
+                })
+            }
+            function editNumberNo() {
+                const id = $("input[name='auditId']").val();
+                const express_company = $("select[name='express_company_name']").val();
+                const express_number = $("input[name='express_number']").val();
+                admin.req({
+                    moduleurl: `Order/modify_express_order`,
+                    type: "POST",
+                    data: { id, express_company, express_number },
+                    done: (res) => {
+                        admin.layer(res.msg);
+                        layui.table.reload("LAY-user-back-order"); //重载表格
+                        layer.closeAll('page'); //关闭所有页面层
+                    }
+                })
+            }
+            // 查询快递单号
+            $('.query').click(function () {
+                let name = $("input[name='order_name']").val();
+                const id = $("input[name='auditId']").val();
+                const express_company = $("select[name='express_company_name']").val();
+                const express_number = $("input[name='express_number']").val();
+                admin.req({
+                    moduleurl: `Order/express_delivery_inquiry`,
+                    type: "POST",
+                    data: { id, express_company, express_number },
+                    done: (res) => {
+                        const { list } = res.data.result
+                        let str = ""
+                        list.map((item) => {
+                            const { time, status } = item
+                            str += `
+                                    <li>
+                                        <p><time>${time}</time>${status}</p>
+                                    </li>  
+
+                                `
+                        })
+                        layer.open({
+                            type: 1,
+                            title: name + '的快递查询信息',
+                            skin: 'layui-layer-demo', //样式类名
+                            closeBtn: 1, //不显示关闭按钮
+                            anim: 2,
+                            area: ['620px', '440px'], //宽高
+                            shadeClose: true, //开启遮罩关闭
+                            content: str
+                        });
+                    }
+                })
+            })
+            layui.data.sendParams = function (params) {
+                params = params;
+                orderById(params.id)
+            };
+
+        });
+    </script>
+    <script src="/start/js/area.js"></script>
+    <script src="/start/js/select.js"></script>
+    <script type="text/html" template lay-done="layui.data.sendParams(d.params)"></script>
+    <style>
+        #panel {
+            border: #d2d6de solid px;
+            border-radius: 10px;
+            margin: 10px 0px 10px 0px;
+            box-shadow: 0 0 10px rgb(168, 164, 164);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 3px solid #00a65a;
+            padding-bottom: 10px;
+            align-items: center;
+        }
+
+        .layui-col-sm3 {
+            display: flex;
+            justify-content: center;
+        }
+
+        .layui-table .layui-input,
+        .layui-table th {
+            text-align: center;
+        }
+
+        .layui-col-sm3 {
+            display: block;
+            justify-content: center;
+            width: auto;
+        }
+
+        .permission_btn {
+            display: flex;
+            align-items: center;
+            display: none;
+
+        }
+
+        .permission_btn>div:first-child {
+            display: flex;
+            align-items: center;
+        }
+
+        .permission_btn>div:first-child div {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+        }
+
+        .layui-layer-content {
+            padding: 20px;
+            line-height: 22px;
+        }
+    </style>
+</div>

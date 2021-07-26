@@ -1,0 +1,331 @@
+<div>
+
+    <div class="memberinfo">
+
+        <div class="layui-form" lay-filter="layuiadmin-form-member" style="padding: 20px 30px 0 0">
+
+            <input type="text" name="id" hidden>
+
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">寄回快递：</label>
+                    <div class="layui-input-inline">
+                        <select name="express_company" lay-verify="required" id="express_company_name"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">寄回单号：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="tuihuo_coding" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">退货单号：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="express_number" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">退货金额：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="tuihuo_true_amount" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户姓名：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="order_name" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户银行及卡号：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="tuihuo_back_bank_no" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">退款银行：</label>
+                    <div class="layui-input-inline">
+                        <select name="paymenttype_name" lay-verify="required" id="paymenttype_name"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">退货客服：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="manager" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-sm8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">退货原因：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="tuihuo_reason" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <!-- 物料采购申请单 -->
+            <div class="layui-col-sm12">
+                <div class="layui-form-item">
+                    <div class="layui-panel" id="panel">
+                        <div style="padding:30px 15px;">
+                            <div style="margin-bottom: 15px;" class="table-header">
+                                <div>
+                                    <div>
+                                        <label for="" style="margin-right: 10px;">商品明细</label>
+                                        <select name="product_name" id="product_name" lay-filter="select1"></select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="layui-form-label">总计金额:</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="order_product_amount" autocomplete="off"
+                                            class="layui-input order_product_amount">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="layui-form-label">总计数量:</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="tuihuo_product_quantity" autocomplete="off"
+                                            class="layui-input tuihuo_product_quantity">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <table id="OrderModelList" cellspacing="0" cellpadding="0" style="width:100%;"
+                            class="layui-form layui-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 6%;">序号</th>
+                                    <th style="width: 30%;">商品名称</th>
+                                    <th style="width: 7%;">单位</th>
+                                    <th style="width: 7%;">数量</th>
+                                    <th style="width: 11%;">单价</th>
+                                    <th style="width: 11%;">金额</th>
+                                    <th style="width: 7%;">赠品</th>
+                                    <th style="width: 15%;">赠品原因</th>
+                                    <th style="width: 6%;">删除</th>
+                                </tr>
+                            </thead>
+                            <tbody id="render"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm9">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-inline">
+                        <input type="button" lay-submit lay-filter="LAY-user-tuihuiu-update-submit" value="确认"
+                            class="layui-btn" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        layui.use(["admin", "form", "element", "laydate", "upload"], function () {
+            let $ = layui.$,
+                form = layui.form,
+                admin = layui.admin,
+                element = layui.element,
+                upload = layui.upload,
+                laydate = layui.laydate;
+            form.render();
+
+            function orderById(id) {
+                id && admin.req({
+                    moduleurl: "Tuihuo/modify",
+                    async: true,
+                    data: { id },
+                    done: (res) => {
+                        const { tuihuoproduct, id, express_number, tuihuo_back_bank_no, manager, tuihuo_reason, tuihuo_true_amount, permisssion_btn, express_company, tuihuo_coding, order: { order_name } = {} } = res.data
+                        const { Paymenttype_list, Expresscompany_list, Product_list } = res.otherdata
+                        form.val("layuiadmin-form-member", {
+                            id,
+                            tuihuo_true_amount,
+                            tuihuo_reason,
+                            tuihuo_coding,
+                            tuihuo_back_bank_no,
+                            manager,
+                            express_number,
+                            order_name
+                        })
+                        let paymenttype_name = '<option value="" selected="">未知</option>';
+                        let express_company_name = '<option value="" selected="">请选择</option>';
+                        let product_name = '<option value="" selected="">请选择</option>';
+
+                        Paymenttype_list.map((item) => {
+                            paymenttype_name += `<option value="${item.paymenttype_name}">${item.paymenttype_name}</option>`
+                        })
+                        Expresscompany_list.map((item) => {
+                            express_company_name += `<option value="${item.express_company_name}">${item.express_company_name}</option>`
+                        })
+                        Product_list.map((item) => {
+                            product_name += `<option value="${item.product_name}">${item.product_name}</option>`
+                        })
+                        $("#paymenttype_name").html(paymenttype_name)
+                        $("#express_company_name").html(express_company_name)
+                        $("#product_name").html(product_name)
+                        tuihuoproduct.map(item => {
+                            $("#render").append(
+                                `
+                                  <tr>
+                                        <td><input name="serial_number[]"  type="text" class="layui-input" value=""></td>
+                                        <td><input name="product_name[]"  type="text" class="layui-input" value="${item.product_name}"></td>
+                                        <td><input name="unit[]"  type="text" class="layui-input" value="${item.unit}"></td>
+                                        <td><input min=1 name="quantity[]"  type="number"  class="layui-input quantity" value="${item.quantity}"></td>
+                                        <td><input name="unit_price[]"  type="text" class="layui-input unit_price"  value="${item.unit_price}"> </td>
+                                        <td><input name="total_price[]"  type="text" class="layui-input total_price"  value="${item.total_price}"> </td>
+                                        <td><input name="giveaway[]"  type="text" class="layui-input"  value="${item.giveaway}"> </td>
+                                        <td><input name="giftreason[]"  type="text" class="layui-input"  value="${item.giftreason}"></td>
+                                        <td>
+                                            <button type="button"  class="layui-btn  layui-btn-danger"><i class="layui-icon"></i></button>
+                                        </td>
+                                   </tr>
+                                `
+                            )
+                        })
+                        form.render("select");
+                        Recosting();
+                        $.total_num_total();
+                    }
+                })
+            }
+            form.on('select(select1)', function (data) {
+                const { value } = data
+                if (value === '') { return false; }
+                admin.req({
+                    moduleurl: 'Order/get_product',
+                    async: true,
+                    data: { product_name: value },
+                    done: function (res) {
+                        const { id, product_name, unit, quantity, unit_price, total_price, Giftreason_list, giveaway } = res.data
+                        let giftreason_name = '<option value="" selected=""></option>'
+                        Giftreason_list.map((item) => {
+                            giftreason_name += `<option value="${item.giftreason_name}">${item.giftreason_name}</option>`
+                        })
+                        let Str = `
+                           <tr>
+                                <td><input name="serial_number[]" disabled type="text" class="layui-input serial_number" value=""></td>
+                                <td><input style="text-align:center;" name="product_name[]" disabled type="text" class="layui-input" value="${product_name}"></td>
+                                <td><input name="unit[]" disabled type="text" class="layui-input" value="${unit}"></td>
+                                <td><input min=1 name="quantity[]"  type="number" class="layui-input quantity" value="${quantity}"></td>
+                                <td><input name="unit_price[]" disabled type="text" class="layui-input unit_price"  value="${unit_price}"> </td>
+                                <td><input name="total_price[]" disabled type="text" class="layui-input total_price"  value="${total_price}"> </td>
+                                <td><input name="giveaway[]" disabled type="text" class="layui-input"  value="${giveaway}"> </td>
+                                <td><select name="giftreason[]" lay-verify="title">${giftreason_name}</select></td>
+                                <td>
+                                    <button type="button"  class="layui-btn  layui-btn-danger"><i class="layui-icon"></i></button>
+                                </td>
+                        </tr> 
+                       `
+                        $("#render").append(Str)
+                        form.render("select");
+                        Recosting();
+                        $.total_num_total();
+                    }
+                })
+            });
+            //重排数量序号
+            function Recosting() {
+                var k = 1;
+                $("input[name='serial_number[]']").each(function () { $(this).attr('value', k); k = ++k; });
+            };
+            //删除行
+            $("body").on('click', '.layui-btn-danger', function () {
+                var elem = $(this).parent().parent();
+                elem.remove();
+                Recosting();
+                $.total_num_total();
+            });
+
+            //数量改变统计
+            $("body").on("input propertychange", ".quantity", function () {
+                var par_tr = $(this).parent().parent();
+                var t_quantity = par_tr.find(".quantity").val();
+                var t_unit_price = par_tr.find(".unit_price").val();
+                par_tr.find(".total_price").val((t_quantity * t_unit_price).toFixed(2));
+                $.total_num_total();
+            });
+            // 总数量  总金额
+            $.total_num_total = function () {
+                let num_total = 0;
+                let total_total = 0;
+                $(".quantity").each(function () {
+                    const n_total = parseInt($(this).val())
+                    if (!n_total) return 0
+                    num_total = parseInt(num_total + n_total)
+                });
+                $(".total_price").each(function () {
+                    const t_total = parseFloat($(this).val())
+                    if (!t_total) return 0
+                    total_total = parseFloat(total_total + t_total);
+                });
+                $('input[name="tuihuo_product_quantity"]').val(num_total);
+                $('input[name="order_product_amount').val((total_total).toFixed(2));
+            }
+
+            layui.data.sendParams = function (params) {
+                params = params;
+                orderById(params.id)
+            };
+
+        });
+    </script>
+    <script type="text/html" template lay-done="layui.data.sendParams(d.params)"></script>
+    <style>
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header>div {
+            display: flex;
+            align-items: center;
+        }
+
+        .table-header>div>div {
+            display: flex;
+            align-items: center;
+        }
+
+        .table-header>div:first-child {
+            flex: 3;
+        }
+
+        .table-header>div:last-child {
+            flex: 2;
+        }
+
+        #panel {
+            border: #d2d6de solid px;
+            border-radius: 10px;
+            margin: 10px 0px 10px 0px;
+            box-shadow: 0 0 10px rgb(168, 164, 164);
+        }
+
+        .layui-table .layui-input,
+        .layui-table th {
+            text-align: center;
+        }
+    </style>
+</div>

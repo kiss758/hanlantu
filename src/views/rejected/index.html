@@ -1,0 +1,81 @@
+<title>订单管理</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>订单管理</cite></a>
+        <a><cite>拒收订单</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-form layui-card-header layuiadmin-card-header-auto"
+                lay-filter="layadmin-userfront-formlist">
+                <div class="layui-form-item">
+
+                    <div class="layui-inline">
+                        <select name="department" id="returnGoodStatus" lay-search="">
+                            <option value="0"></option>
+                            <option value="1">退回状态1</option>
+                            <option value="2">退回状态2</option>
+                        </select>
+                    </div>
+
+                    <div class="layui-inline">
+                        <input name="start_end_time" lay-verify="timerange" type="text" class="layui-input"
+                            id="start_end_time" placeholder="日期时间范围" />
+                    </div>
+
+                    <div class="layui-inline">
+                        <input type="text" name="keyword" placeholder="请输入退货单号" autocomplete="off"
+                            class="layui-input" />
+                    </div>
+
+                    <div class="layui-inline">
+                        <button class="layui-btn layuiadmin-btn-useradmin" lay-submit
+                            lay-filter="LAY-user-front-search">
+                            搜索
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                        <button class="layui-btn layuiadmin-btn-useradmin" lay-submit
+                            lay-filter="LAY-user-front-exportReturngoodData">导出数据
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <table id="LAY-user-back-returngood1" lay-filter="LAY-user-back-returngood1"></table>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui
+        .use("rejected", layui.factory("rejected"))
+        .use(["admin", "rejected", "table"], function () {
+            var $ = layui.$,
+                admin = layui.admin,
+                view = layui.view,
+                table = layui.table,
+                form = layui.form;
+
+            form.render(null, "layadmin-useradminrole-formlist");
+
+            //事件
+            var active = {
+
+            };
+            form.verify({
+                timerange: function (value) {
+                    if (!value) return "时间类型不能为空";
+                },
+            });
+
+            $(".layui-btn.layuiadmin-btn-role").on("click", function () {
+                var type = $(this).data("type");
+                active[type] ? active[type].call(this) : "";
+            });
+        });
+</script>

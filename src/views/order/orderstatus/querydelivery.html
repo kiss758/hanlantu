@@ -1,0 +1,52 @@
+<div>
+    <!-- <script type="text/html" template>
+           <input type="text" value="{{d.params.order_name}}">
+    </script> -->
+    <ul class="query">
+        <li>
+        </li>
+    </ul>
+
+
+</div>
+
+<script>
+
+    layui.use(["admin", "form", "element", "laydate", "upload"], function () {
+        let $ = layui.$,
+            form = layui.form,
+            admin = layui.admin,
+            element = layui.element,
+            upload = layui.upload,
+            laydate = layui.laydate;
+        form.render();
+        function queryDelivery(id, express_company, express_number) {
+            admin.req({
+                moduleurl: `Order/express_delivery_inquiry`,
+                type: "POST",
+                data: { id, express_company, express_number },
+                done: (res) => {
+                    const { list } = res.data.result
+                    let str = ""
+                    list.map(item => {
+                        const {time,status} = item
+                        str += `
+                        <li>
+                           <p><time>${time}</time>${status}</p>
+                        </li>
+                        `
+                    })
+                    $(".query").html(str)
+                }
+            })
+        }
+        layui.data.sendParams = function (params) {
+            params = params;
+            const { id, express_company, express_number } = params
+            queryDelivery(id, express_company, express_number)
+        };
+    })
+
+</script>
+
+<script type="text/html" template lay-done="layui.data.sendParams(d.params)"></script>

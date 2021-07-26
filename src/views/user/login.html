@@ -1,0 +1,176 @@
+<script type="text/html" template>
+  <link
+    rel="stylesheet"
+    href="{{ layui.setter.base }}style/login.css?v={{ layui.admin.v }}-1"
+    media="all"
+  />
+</script>
+
+<div
+  class="layadmin-user-login layadmin-user-display-show"
+  id="LAY-user-login"
+  style="display: none"
+>
+  <div class="layadmin-user-login-main">
+    <div class="layadmin-user-login-box layadmin-user-login-header">
+      <h2>微信订单管理系统</h2>
+    </div>
+    <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+      <div class="layui-form-item">
+        <label
+          class="layadmin-user-login-icon layui-icon layui-icon-username"
+          for="LAY-user-login-username"
+        ></label>
+        <input
+          type="text"
+          name="Username"
+          id="LAY-user-login-username"
+          lay-verify="required"
+          placeholder="用户名"
+          class="layui-input"
+        />
+      </div>
+      <div class="layui-form-item">
+        <label
+          class="layadmin-user-login-icon layui-icon layui-icon-password"
+          for="LAY-user-login-password"
+        ></label>
+        <input
+          type="password"
+          name="Password"
+          id="LAY-user-login-password"
+          lay-verify="required"
+          placeholder="密码"
+          class="layui-input"
+        />
+      </div>
+
+      <div class="layui-form-item">
+        <div class="layui-row">
+          <div class="layui-col-xs7">
+            <label
+              class="layadmin-user-login-icon layui-icon layui-icon-vercode"
+              for="LAY-user-login-vercode"
+            ></label>
+            <input
+              type="text"
+              name="Verificationcode"
+              id="LAY-user-login-vercode"
+              placeholder="验证码"
+              class="layui-input"
+              lay-verify="subject_add"
+            />
+          </div>
+          <div class="layui-col-xs5">
+            <div style="margin-left: 10px">
+              <button
+                class="layui-btn layui-btn-fluid"
+                lay-submit
+                lay-filter="LAY-verify-code-submit"
+              >
+                获取验证码
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <input
+          type="text"
+          name="bieming"
+          id="LAY-user-login-alias"
+          placeholder="请输入别名"
+          class="layui-input"
+        />
+      </div>
+      <div class="layui-form-item">
+        <button
+          class="layui-btn layui-btn-fluid"
+          lay-submit
+          lay-filter="LAY-user-login-submit"
+        >
+          登 入
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "form", "user", "layer"], function () {
+    var $ = layui.$,
+      setter = layui.setter,
+      admin = layui.admin,
+      form = layui.form,
+      router = layui.router(),
+      search = router.search;
+    layer = layui.layer;
+    var $body = $("body");
+    form.render();
+    form.on("submit(LAY-verify-code-submit)", function (res) {
+      admin.req({
+        moduleurl: "Login/sendVerificationcode",
+        data: {
+          ...res.field,
+          code: "" || sessionStorage.getItem("code"),
+        },
+        done: function (res) {
+          res.code === 0
+            ? layer.msg(`${res.msg}`, {
+                offset: "15px",
+                icon: 1,
+                time: 1000,
+              })
+            : layer.msg(`${res.msg}`, {
+                offset: "15px",
+                icon: 2,
+                time: 1000,
+              });
+          sessionStorage.setItem("code", res.data.code);
+        },
+      });
+    });
+
+    //登录
+    form.on("submit(LAY-user-login-submit)", function (obj) {
+      //自定义验证规则
+      form.verify({
+        subject_add: function (value) {
+          if (value.length < 5) {
+            return "请输入5位数的验证码";
+          }
+        },
+      });
+      let obj1 = { code: sessionStorage.getItem("code") };
+      const objdata = { ...obj1, ...obj.field };
+      admin.req({
+        type: "POST",
+        moduleurl: "Login/login", //实际使用请改成服务端真实接口
+        data: objdata,
+        done: function (res) {
+          sessionStorage.removeItem("code");
+          //请求成功后，写入 access_token
+          layui.data(setter.tableName, {
+            key: setter.request.tokenName,
+            value: res.data.token,
+          });
+          localStorage.setItem("username", res.data.user.Username);
+          //登入成功的提示与跳转
+          layer.msg(
+            "登入成功",
+            {
+              offset: "15px",
+              icon: 1,
+              time: 1000,
+            },
+            function () {
+              location.hash = search.redirect
+                ? decodeURIComponent(search.redirect)
+                : "/";
+            }
+          );
+        },
+      });
+    });
+  });
+</script>

@@ -1,0 +1,362 @@
+<div>添加用户信息</div>
+<div
+  class="layui-form"
+  lay-filter="layuiadmin-form-role"
+  style="padding: 20px 30px 0 0"
+>
+  <input
+    type="hidden"
+    name="ID"
+    autocomplete="off"
+    class="layui-input"
+    value=""
+  />
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">用户名:</label>
+    <div class="layui-input-block">
+      <input
+        type="text"
+        name="Username"
+        required
+        lay-verify="required"
+        placeholder="请输入用户名"
+        autocomplete="off"
+        class="layui-input"
+      />
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">密码:</label>
+    <div class="layui-input-block">
+      <input
+        type="password"
+        name="Password"
+        placeholder="请输入密码"
+        autocomplete="off"
+        class="layui-input"
+      />
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">真实名字:</label>
+    <div class="layui-input-block">
+      <input
+        type="text"
+        name="True_name"
+        required
+        lay-verify="required"
+        placeholder="请输入真实名字"
+        autocomplete="off"
+        class="layui-input"
+      />
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">出货单名称:</label>
+    <div class="layui-input-block">
+      <input
+        type="text"
+        name="order_alias"
+        id="order_alias"
+        required
+        lay-verify="required"
+        placeholder="出货单名称"
+        autocomplete="off"
+        class="layui-input"
+      />
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">用户权限:</label>
+    <div class="layui-input-block">
+      <select name="Roleid" id="Roleid" lay-verify="required"></select>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">查看权限：</label>
+    <div class="layui-input-block">
+      <select
+        name="Showauthoritid"
+        id="Showauthoritid"
+        lay-verify="required"
+      ></select>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">部门:</label>
+    <div class="layui-input-block">
+      <select name="Department" id="Department" lay-verify="required"></select>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">禁止登录?:</label>
+    <div class="layui-input-block">
+      <select name="Status" id="Status" lay-verify="required">
+        <option value="0">正常</option>
+        <option value="1">禁止</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">类型:</label>
+    <div class="layui-input-block">
+      <select name="Type" id="Type" lay-verify="required"></select>
+    </div>
+  </div>
+
+  <div class="layui-input-line" style="margin-left: 80px">
+    <button
+      id="add"
+      type="button"
+      class="layui-btn layui-btn-warm layui-btn-sm"
+      style="height: 100%"
+    >
+      <i class="layui-icon">&#xe654;</i>
+    </button>
+  </div>
+
+  <div class="layui-form-item" id="last">
+    <div style="display: flex; margin-bottom: 20px">
+      <label class="layui-form-label">别名:</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          name="bieming[]"
+          id="bieming"
+          required=""
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+      <label class="layui-form-label">openid:</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          name="open_val[]"
+          id="open_val"
+          required=""
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+
+      <div class="layui-input-line" style="margin-left: 80px">
+        <button
+          id="add"
+          type="button"
+          class="layui-btn layui-btn-danger layui-btn-sm removeclass"
+          style="height: 100%"
+        >
+          <i class="layui-icon">&#xe67e;</i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        lay-submit
+        lay-filter="LAY-user-role-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      form = layui.form,
+      admin = layui.admin;
+      
+    $(() => {
+      admin.req({
+        moduleurl: "User/add",
+        ansyc:false,
+        data: {},
+        done: (val) => {
+          let Roleid = '<option value="" selected="">用户权限</option>';
+          let Showauthoritid = '<option value="" selected="">查看权限</option>';
+          let Department = '<option value="" selected="">部门</option>';
+          let Type = '<option value="" selected="">类型</option>';
+          const {
+            Role_list,
+            Showauthorit_list,
+            Department_list,
+            UserType_list,
+          } = val.data;
+          Role_list.map((item) => {
+            Roleid += `<option value="${item.ID}">${item.Rolename}</option>`;
+          });
+          Showauthorit_list.map((item) => {
+            Showauthoritid += `<option value="${item.id}">${item.explain}</option>`;
+          });
+          Department_list.map((item) => {
+            Department += `<option value="${item.department}">${item.department}</option>`;
+          });
+          UserType_list.map((item) => {
+            Type += `<option value="${item.type}">${item.type}</option>`;
+          });
+          $("#Roleid").html(Roleid);
+          $("#Showauthoritid").html(Showauthoritid);
+          $("#Department").html(Department);
+          $("#Type").html(Type);
+          form.render("select");
+        },
+      });
+    });
+
+    function editUserForm(id) {
+      if (id == undefined || id == "") {
+        return false;
+      }
+      admin.req({
+        moduleurl: "User/edituser",
+        ansyc:false,
+        data: { ID: id },
+        done: (res) => {
+          const {
+            ID,
+            Username,
+            True_name,
+            rolelist,
+            Status,
+            showauthoritylist,
+            Department,
+            Type,
+            openid,
+            order_alias,
+          } = res.data;
+          // console.log(rolelist.ID);
+          $("input[name='ID']").val(ID);
+          $("input[name='Username']").val(Username);
+          $("input[name='True_name']").val(True_name);
+          $("input[name='order_alias']").val(order_alias);
+          $("#Department").val(Department);
+          $("#Type").val(Type);
+          $("#Status").val(Status);
+          $("#Roleid").val(rolelist.ID);
+          $("#Showauthoritid").val(showauthoritylist.id);
+          let str = "";
+          $.each(openid, function (_key, _val) {
+            str += `
+               <div style="display: flex; margin-bottom: 20px">
+                  <label class="layui-form-label">别名:</label>
+                  <div class="layui-input-inline">
+                    <input
+                      type="text"
+                      name="bieming[]"
+                      id="bieming"
+                      required=""
+                      value="${_key}"
+                      autocomplete="off"
+                      class="layui-input"
+                    />
+                  </div>
+                  <label class="layui-form-label">openid:</label>
+                  <div class="layui-input-inline">
+                    <input
+                      type="text"
+                      name="open_val[]"
+                      id="open_val"
+                      required=""
+                      value="${_val}"
+                      autocomplete="off"
+                      class="layui-input"
+                    />
+                  </div>
+                 <div class="layui-input-line" style="margin-left: 80px">
+                  <button
+                    id="add"
+                    type="button"
+                    class="layui-btn layui-btn-danger layui-btn-sm removeclass"
+                    style="height: 100%"
+                  >
+                    <i class="layui-icon">&#xe67e;</i>
+                  </button>
+             </div>
+              </div>
+
+            `;
+          });
+
+          $("#last").html(str);
+
+          form.render("select");
+        },
+      });
+    }
+    layui.data.sendParams = function (params) {
+      params = params;
+      editUserForm(params.ID);
+    };
+
+    $("#add").click(function () {
+      var str = `
+          <div style="display: flex;margin-bottom: 20px">
+          <label class="layui-form-label">别名:</label>
+          <div class="layui-input-inline">
+            <input
+              type="text"
+              name="label[]"
+              required=""
+              autocomplete="off"
+              class="layui-input"
+            />
+          </div>
+          <label class="layui-form-label">openid:</label>
+          <div class="layui-input-inline">
+            <input
+              type="text"
+              name="label[]"
+              required=""
+              autocomplete="off"
+              class="layui-input"
+            />
+          </div>
+          <div class="layui-input-line" style="margin-left: 80px">
+            <button
+              id="add"
+              type="button"
+              class="layui-btn layui-btn-danger layui-btn-sm removeclass"
+              style="height: 100%"
+            >
+              <i class="layui-icon">&#xe67e;</i>
+            </button>
+          </div>
+        </div>
+      `;
+
+      $("#last").append(str);
+    });
+    $("body").on("click", ".removeclass", function () {
+      //元素移除前校验是否被引用
+      var approvalName = $(this)
+        .parent()
+        .prev("div.layui-input-inline")
+        .children()
+        .val();
+      var parentEle = $(this).parent().parent();
+      parentEle.remove();
+    });
+  });
+</script>
+
+<script
+  type="text/html"
+  template
+  lay-done="layui.data.sendParams(d.params)"
+></script>

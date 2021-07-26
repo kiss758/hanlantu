@@ -1,0 +1,145 @@
+
+
+    <!-- 出货单 -->
+    <div class="memberinfo">
+
+        <div class="layui-form" lay-filter="layuiadmin-form-member" style="padding: 20px 30px 0 0">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>处理回款数据</legend>
+            </fieldset>
+            <div class="layui-row layui-col-space10">
+
+      
+     
+                <!-- 物料采购申请单 -->
+                <div class="layui-col-sm12">
+                    <div class="layui-form-item">
+                        <div class="layui-col-md12">
+                            <div class="layui-panel" id="panel">
+                                <table id="OrderModelList" cellspacing="0" cellpadding="0" style="width:100%;"
+                                    class="layui-form layui-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:10%;">序号</th>
+                                            <th style="width:30%;">订单编号</th>
+                                            <th>回款金额</th>
+                                            <th>回款时间</th>
+                                            <th>回款物流</th>
+                                            <th>回款银行</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="text-align: center;" id="render"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="layui-col-sm9">
+                    <div class="layui-form-item">
+                        
+                        <div class="layui-input-inline">
+                            <input type="button" lay-submit lay-filter="LAY-payback_add-submit" value="提交回款"
+                                class="layui-btn" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- 出货单 -->
+
+
+    <script>
+        layui.use(["admin", "form", "element", "laydate", "upload"], function () {
+            let $ = layui.$,
+                form = layui.form,
+                admin = layui.admin,
+                element = layui.element,
+                upload = layui.upload,
+                laydate = layui.laydate;
+            form.render();
+
+  
+            form.on("submit(LAY-payback_add-submit)", function (data) {
+                  var field = data.field; //获取提交的字段
+                  admin.req({
+                    moduleurl: "Payback/Add_do",
+                    type: "POST",
+                    data: field,
+                    done: function (res) {
+                      layer.msg(`${res.msg}`, {
+                        offset: "15px",
+                        icon: 1,
+                        time: 2000,
+                      });
+                    },
+                  });
+                  layui.table.reload("LAY-user-back-order"); //重载表格
+                  layer.closeAll('page'); //关闭所有页面层
+                  
+            });
+
+            function orderById(id_list) {
+                // if (id == undefined || id == "") {
+                //     return false;
+                // }
+                admin.req({
+                    moduleurl: "Payback/add",
+                    // async: false,
+                    data: { id_list: id_list },
+                    done: (res) => {
+                        $.each(res.data, function (i, val) {
+                            const {id, order_coding, order_name, collection_amount,express_company,expresscompany} = val
+                            const { Expresscompany_list,FankuanBank_list } = res.otherdata
+                            let express_company_name = ''
+                            Expresscompany_list.map((itm) => {
+                                if (itm.express_company_name === express_company) {
+                                    express_company_name += `<option selected value="${itm.express_company_name}">${itm.express_company_name}</option>`
+                                }else{
+                                    express_company_name += `<option value="${itm.express_company_name}">${itm.express_company_name}</option>`
+                                }
+                            })
+                            let bank_name = ''
+                            FankuanBank_list.map((itm) => {
+                                if (itm.bank_name === expresscompany.fankuanbank.bank_name) {
+                                    bank_name += `<option selected value="${itm.bank_name}">${itm.bank_name}</option>`
+                                }else{
+                                    bank_name += `<option value="${itm.bank_name}">${itm.bank_name}</option>`
+                                }
+                            })
+                            
+                            let Str = `
+                                <tr>
+                                        <td><input name="serial_number[]" disabled type="text" class="layui-input" value="${i+1}">
+                                            <input lay-verify="required" name="order_id[]" type="hidden" value="${id}"></td>
+                                        <td><input style="text-align:center;"  disabled type="text" class="layui-input" value="${order_coding} 姓名:${order_name}"></td>
+                                        <td><input lay-verify="required" name="payback_amount[]"  type="text" class="layui-input" value="${collection_amount}"></td>
+                                        <td><input lay-verify="required" id="date${i+1}"  name="payback_date[]"  type="text" class="layui-input quantity" value=""></td>
+                                        <td><select lay-verify="required" name="payback_expresscompany[]" lay-verify="title">${express_company_name}</select></td>
+                                        <td><select lay-verify="required" name="fankuan_bank[]" lay-verify="title">${bank_name}</select></td>
+                                </tr> 
+                            `;
+                                $("#render").append(Str);
+                        
+                            form.render("select");
+                            laydate.render({
+                                elem: '#date'+`${i+1}`,
+                                 value: admin.dateFormat(),
+                                 isInitValue: true
+                            });
+                        })
+                    }
+                })
+            }
+
+            layui.data.sendParams = function (params) {
+                params = params;
+                // console.log(params);
+                orderById(params)
+            };
+        });
+    </script>
+    
+    <script type="text/html" template lay-done="layui.data.sendParams(d.params)"></script>

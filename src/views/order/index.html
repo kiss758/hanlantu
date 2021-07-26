@@ -1,0 +1,209 @@
+<title>订单管理</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay->订单管理</a>
+    <a><cite>订单列表</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <select name="time_type" lay-verify="timetype" lay-reqText="dddd">
+            <option value="">时间类型</option>
+            <option value="0">创建时间</option>
+            <option value="1">发货时间</option>
+          </select>
+        </div>
+
+        <div class="layui-inline">
+          <div class="layui-input-inline">
+            <input name="start_end_time" lay-verify="timerange" type="text" class="layui-input" id="start_end_time"
+              placeholder="日期时间范围" />
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <select name="express_company" id="express_company" lay-search=""></select>
+        </div>
+
+        <div class="layui-inline">
+          <select name="order_type" id="order_type" lay-search=""></select>
+        </div>
+
+        <div class="layui-inline">
+          <select name="founder_id" id="founder_id" lay-search=""></select>
+        </div>
+
+        <div class="layui-inline">
+          <select name="department" id="department" lay-search="">
+            <option value="">选择部门</option>
+          </select>
+        </div>
+
+
+
+        <div class="layui-inline">
+          <select name="order_status" id="order_status" lay-search=""></select>
+        </div>
+
+        <div class="layui-inline">
+          <input type="text" name="keyword" placeholder="单号、编号、姓名、手机、地址" autocomplete="off" class="layui-input" />
+        </div>
+
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-search">
+            搜索
+          </button>
+          <button class="layui-btn layuiadmin-btn-role" lay-submit lay-filter="LAY-user-front-export"
+            data-type="export">
+            导出
+          </button>
+        </div>
+
+
+        <div class="layui-form-item order_Express_status">
+          <div class="layui-inline" id="order_status">
+            <a class="status_att" data-index="今日订单">今日订单<b>0</b> </a>
+            <a class="status_att" data-index="待修改">待修改<b>0</b> </a>
+            <a class="status_att" data-index="待主管审核">待主管审核<b>0</b></a>
+            <a class="status_att" data-index="待发货">待发货<b>0</b></a>
+            <a class="status_att" data-index="待出纳审核">待出纳审核<b>0</b></a>
+            <a class="status_att" data-index="待礼品员审核">待礼品员审核<b>0</b></a>
+            <a class="status_att" data-index="已发货">已发货<b>0</b></a>
+            <a class="status_att" data-index="延迟发货(主品)">延迟发货(主品)<b>0</b></a>
+            <a class="status_att" data-index="延迟发货(赠品)">延迟发货(赠品)<b>0</b></a>
+            <a class="status_att" data-index="已收款待发货">已收款待发货<b>0</b></a>
+            <a class="status_att" data-index="待仓库确认收货">待仓库确认收货<b>0</b></a>
+            <a class="status_att" data-index="待出纳确认退款">待出纳确认退款<b>0</b></a>
+          </div>
+          <div class="layui-inline" id="Express_status">
+            <a class="status_att" data-index="1">揽收<b>0</b> </a>
+            <a class="status_att" data-index="5">派件<b>0</b></a>
+            <a class="status_att" data-index="4">退签<b>0</b></a>
+            <a class="status_att" data-index="2">疑难<b>0</b></a>
+            <a class="status_att" data-index="0">在途<b>0</b></a>
+          </div>
+        </div>
+
+
+
+
+      </div>
+    </div>
+    <div class="layui-card-body">
+      <table id="LAY-user-back-order" class="layui-table" lay-filter="LAY-user-back-order"></table>
+
+      <div class="Statistics" id="Statistics">
+        <a href="javascript:void(0);">订单金额<b>0</b> </a>
+        <a href="javascript:void(0);">定金<b>0</b></a>
+        <a href="javascript:void(0);">代收金额<b>0</b></a>
+        <a href="javascript:void(0);">二次收款金额<b>0</b></a>
+        <a href="javascript:void(0);">取消代收金额<b>0</b></a>
+      </div>
+      <script type="text/html" id="table-useradmin-admin">
+        <a style="margin: 0;" class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"
+          ><i class="layui-icon layui-icon-edit"></i>编辑查看</a>
+           <a style="margin: 0;" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="query"
+          ><i class="layui-icon layui-icon-edit"></i>快递查询</a>
+      </script>
+
+
+      <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+              <button class="layui-btn layui-btn-sm" lay-event="getCheckData">处理回款数据</button>
+              <!-- <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+              <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>	 -->
+            </div>
+<!-- 
+            {{#  if(d.phone !=='' && d.province !==''){ }}
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="downorder"
+            ><i class="layui-icon layui-icon-download-circle"></i>下单</a>
+            {{#  } }} -->
+
+            <!-- {{# console.log(d);}} -->
+
+        </script>
+
+
+
+    </div>
+  </div>
+</div>
+<script>
+
+  layui
+    .use("orderlist", layui.factory("orderlist"))
+    .use(["admin", "orderlist", "table", 'element', 'laytpl'], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        element = layui.element,
+        laytpl = layui.laytpl,
+        form = layui.form;
+
+      element.init();
+
+      var active = {
+        export: function () {
+          form.verify({
+            timetype: function (value) {
+              if (!value) return "时间类型不能为空";
+            },
+            timerange: function (value) {
+              if (!value) return "日期范围不能为空";
+            },
+          });
+          form.on("submit(LAY-user-front-export)", function (data) {
+            const { time_type, start_end_time } = data.field
+            admin.req({
+              moduleurl: `Order/data_export`,
+              type: "POST",
+              data: { time_type, start_end_time },
+              done: (res) => {
+                const { url } = res.data
+                window.location.href = url;
+              }
+            })
+          });
+        }
+      }
+
+      $(".layui-btn.layuiadmin-btn-role").on("click", function () {
+        var type = $(this).data("type");
+        active[type] ? active[type].call(this) : "";
+      });
+
+    });
+</script>
+<style>
+  b {
+    color: red;
+    margin-left: 5px;
+  }
+
+  .status_att {
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  .order_Express_status {
+    line-height: 19px;
+  }
+
+  .layui-table-page {
+    height: auto;
+  }
+
+
+
+  /* .layui-table-page {
+    position: absolute;
+    bottom: 0;
+  } */
+</style>

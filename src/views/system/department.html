@@ -1,0 +1,83 @@
+<title>部门管理</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">部门管理</a>
+    <a><cite>系统管理</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <!-- <div style="padding-bottom: 10px">
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">
+          添加
+        </button>
+      </div> -->
+      <table
+        id="LAY-user-back-deparment"
+        class="layui-table"
+        lay-filter="LAY-user-back-deparment"
+      ></table>
+      <!-- <script type="text/html" id="table-useradmin-admin">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"
+          ><i class="layui-icon layui-icon-edit"></i>编辑</a
+        >
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"
+          ><i class="layui-icon layui-icon-delete"></i>删除</a
+        >
+      </script> -->
+    </div>
+  </div>
+</div>
+<script>
+  layui
+    .use("deparment", layui.factory("deparment"))
+    .use(["admin", "deparment", "table"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form;
+
+      //事件
+      var active = {
+        add: function () {
+          admin.popup({
+            title: "添加权限",
+            area: ["550px", "500px"],
+            id: "LAY-popup-user-add",
+            success: function (layero, index) {
+              view(this.id)
+                .render("user/userform")
+                .done(function (res) {
+                  form.render(null, "layuiadmin-form-useradmin");
+                  //监听提交
+                  form.on("submit(LAY-user-front-submit)", function (data) {
+                    var field = data.field; //获取提交的字段
+                    admin.req({
+                      moduleurl: "competence/competence_add_do",
+                      data: field,
+                      done: function (res) {
+                        layer.msg(`${res.msg}`, {
+                          offset: "15px",
+                          icon: 1,
+                          time: 2000,
+                        });
+                        layui.table.reload("LAY-user-back-deparment"); //重载表格
+                        layer.close(index); //执行关闭
+                      },
+                    });
+                  });
+                });
+            },
+          });
+        },
+      };
+      $(".layui-btn.layuiadmin-btn-useradmin").on("click", function () {
+        var type = $(this).data("type");
+        active[type] ? active[type].call(this) : "";
+      });
+    });
+</script>

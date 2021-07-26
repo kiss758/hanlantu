@@ -1,0 +1,146 @@
+<div
+  class="layui-form"
+  lay-filter="layuiadmin-form-useradmin"
+  style="padding: 20px 0 0 0"
+>
+  <div class="layui-form-item">
+    <label class="layui-form-label">关联权限:</label>
+    <div class="layui-inline">
+      <select
+        name="competence_id"
+        lay-verify="required"
+        id="persimmon_list"
+        lay-search=""
+      ></select>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">菜单分类:</label>
+    <div class="layui-inline">
+      <select name="Sid" id="menu_list" lay-search=""></select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">title:</label>
+    <div class="layui-input-inline">
+      <input
+        type="text"
+        name="title"
+        value=""
+        placeholder=""
+        autocomplete="off"
+        class="layui-input"
+        lay-verify="required"
+      />
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">icon:</label>
+    <div class="layui-input-inline">
+      <input
+        type="text"
+        name="icon"
+        value=""
+        placeholder=""
+        autocomplete="off"
+        class="layui-input"
+        lay-verify="required"
+      />
+    </div>
+  </div>
+
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">jump:</label>
+    <div class="layui-input-inline">
+      <input
+        type="text"
+        name="jump"
+        value=""
+        placeholder=""
+        autocomplete="off"
+        class="layui-input"
+        lay-verify="required"
+      />
+    </div>
+  </div>
+
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">name:</label>
+    <div class="layui-input-inline">
+      <input
+        type="text"
+        name="name"
+        value=""
+        placeholder=""
+        autocomplete="off"
+        class="layui-input"
+        lay-verify="required"
+      />
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        lay-submit
+        lay-filter="LAY-user-menu-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      form = layui.form,
+      admin = layui.admin;
+
+    $(() => {
+      admin.req({
+        moduleurl: "Menu/add",
+        data: {},
+        done: (res) => {
+          let opt = '<option value="">选择权限</option>';
+          let opt1 = '<option value="0" >顶级菜单</option>';
+          const { Competence_list, Menu_top_list } = res.data;
+          Competence_list.map((item) => {
+            opt += `<option value="${item.ID}">${item.Cname}</option>`;
+          });
+          Menu_top_list.map((item) => {
+            opt1 += `<option value="${item.ID}">${item.title}</option>`;
+          });
+          $("#persimmon_list").html(opt);
+          $("#menu_list").html(opt1);
+          form.render("select");
+        },
+      });
+    });
+
+    //定义一个 lay-done 对应的全局方法，以供动态模板执行
+    // layui.data.sendParams = function (params) {
+    //   resdata = params.resdata;
+    //   Competence_top_list = resdata.Competence_top_list;
+
+    //   setTimeout(function () {
+    //     let opt = '<option value="0" selected="">顶级目录</option>';
+    //     Competence_top_list.map((item) => {
+    //       opt += `<option value="${item.ID}">${item.Cname}</option>`;
+    //     });
+    //     $("#persimmon_list").html(opt);
+    //     form.render("select");
+    //   }, 10);
+    // };
+  });
+</script>
+
+<!-- <script
+  type="text/html"
+  template
+  lay-done="layui.data.sendParams(d.params)"
+></script> -->

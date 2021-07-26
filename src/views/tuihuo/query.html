@@ -1,0 +1,342 @@
+<div>
+
+    <div class="memberinfo">
+
+        <div class="layui-form" lay-filter="layuiadmin-form-member" style="padding: 20px 30px 0 0">
+
+            <input type="text" name="auditId" hidden>
+
+            <!-- 主管审核 -->
+            <div class="permission_btn display  executive_director_btn">
+                <div>
+                    <button type="button" name="auditing_type" value="1" class="layui-btn layui-btn-sm">主管审核通过</button>
+                    <button type="button" name="auditing_type" value="2" class="layui-btn layui-btn-sm">主管拒绝通过</button>
+                </div>
+            </div>
+            <!-- 经理审核 -->
+            <div class="permission_btn display manager_btn">
+                <div>
+                    <button type="button" name="auditing_type" value="1" class="layui-btn layui-btn-sm">经理审核通过</button>
+                    <button type="button" name="auditing_type" value="2" class="layui-btn layui-btn-sm">经理拒绝通过</button>
+                </div>
+            </div>
+
+            <!-- 待仓库确认收货 -->
+            <div class="permission_btn display warehouse_btn ">
+                <div>
+                    <button type="button" name="auditing_type" value="1" class="layui-btn layui-btn-sm">仓库确认收货</button>
+                </div>
+            </div>
+
+            <!-- 待出纳确认退款 -->
+            <div class="permission_btn display teller_btn ">
+                <div>
+                    <button type="button" name="auditing_type" value="1" class="layui-btn layui-btn-sm">出纳确认退款</button>
+                </div>
+            </div>
+
+
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">寄回快递：</label>
+                    <div class="layui-input-inline">
+                        <select name="express_company" disabled></select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">寄回单号：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="express_number" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">退货金额：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="tuihuo_true_amount" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户姓名：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="order_name" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户银行及卡号：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="tuihuo_back_bank_no" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">退货客服：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="manager" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">退款银行：</label>
+                    <div class="layui-input-inline">
+                        <select name="refund_bank" id="payment_type" disabled></select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">退款时间：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="retund_date" id="test1" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">退货原因：</label>
+                    <div class="layui-input-block">
+                        <textarea name="tuihuo_reason" class="layui-textarea" />
+                    </div>
+                </div>
+            </div>
+            <!-- 物料采购申请单 -->
+            <div class="layui-col-sm12">
+                <div class="layui-form-item">
+                    <div class="layui-panel" id="panel">
+                        <div style="padding:30px 15px;">
+                            <div style="margin-bottom: 15px;">
+                                <div>
+                                    <label class="layui-form-label">总计金额:</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="order_product_amount"
+                                            class="layui-input order_product_amount">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="layui-form-label">总计数量:</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="product_quantity" class="layui-input product_quantity">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <table id="OrderModelList" cellspacing="0" cellpadding="0" style="width:100%;"
+                            class="layui-form layui-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 6%;">序号</th>
+                                    <th style="width: 30%;">商品名称</th>
+                                    <th style="width: 7%;">单位</th>
+                                    <th style="width: 7%;">数量</th>
+                                    <th style="width: 11%;">单价</th>
+                                    <th style="width: 11%;">金额</th>
+                                    <th style="width: 7%;">赠品</th>
+                                    <th style="width: 15%;">赠品原因</th>
+                                </tr>
+                            </thead>
+                            <tbody id="render"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        layui.use(["admin", "form", "element", "laydate", "upload"], function () {
+            let $ = layui.$,
+                form = layui.form,
+                admin = layui.admin,
+                element = layui.element,
+                upload = layui.upload,
+                laydate = layui.laydate;
+            form.render();
+
+            laydate.render({
+                elem: "#test1"
+                , value: admin.dateFormat()
+                , isInitValue: true
+            });
+
+            function orderById(id) {
+                id && admin.req({
+                    moduleurl: "Tuihuo/show",
+                    async: true,
+                    data: { id },
+                    done: (res) => {
+                        const { id, express_number, tuihuo_back_bank_no, manager, tuihuo_coding, tuihuo_reason, tuihuo_true_amount, express_company, permisssion_btn, tuihuoproduct, order: { department, payment_type, order_name } = {} } = res.data
+                        console.log(res.data.order);
+                        form.val("layuiadmin-form-member", {
+                            "auditId": id,
+                            express_number,
+                            tuihuo_true_amount,
+                            tuihuo_reason,
+                            tuihuo_back_bank_no,
+                            tuihuo_coding,
+                            manager,
+                            order_name
+                        })
+                        $('select[name="express_company"]').html(`<option>${express_company}</option>`);
+                        $('#payment_type').html(`<option>${payment_type}</option>`);
+                        tuihuoproduct.map(item => {
+                            $("#render").append(
+                                `
+                                  <tr>
+                                        <td><input name="serial_number[]"  type="text" class="layui-input" value=""></td>
+                                        <td><input name="product_name[]"  type="text" class="layui-input" value="${item.product_name}"></td>
+                                        <td><input name="unit[]"  type="text" class="layui-input" value="${item.unit}"></td>
+                                        <td><input min=1 name="quantity[]"  type="number"  class="layui-input quantity" value="${item.quantity}"></td>
+                                        <td><input name="unit_price[]"  type="text" class="layui-input unit_price"  value="${item.unit_price}"> </td>
+                                        <td><input name="total_price[]"  type="text" class="layui-input total_price"  value="${item.total_price}"> </td>
+                                        <td><input name="giveaway[]"  type="text" class="layui-input"  value="${item.giveaway}"> </td>
+                                        <td><input name="giftreason[]"  type="text" class="layui-input"  value="${item.giftreason}"> </td>
+                                   </tr>
+                                `
+                            )
+                        })
+                        //先隐藏所有的权限按钮
+                        $(".permission_btn").each(function () { $(this).hide(); });
+                        //展示
+                        $.each(permisssion_btn, function (i, v) {
+                            $(`.${v}`).show();
+                        })
+                        form.render("select");
+                        Recosting();
+                        $.total_num_total();
+                    }
+                })
+            }
+            //主管审核
+            $('.executive_director_btn button').click(function () {
+                const auditing_type = $(this).val();
+                const id = $("input[name='auditId']").val();
+                admin.req({
+                    moduleurl: "Tuihuo/executive_director_auditing",
+                    data: { auditing_type, id },
+                    done: (res) => {
+                        admin.layer(res.msg);
+                        layui.table.reload("LAY-user-back-returngood");
+                        layer.closeAll('page');
+                    }
+                })
+            });
+            //经理审核
+            $('.manager_btn button').click(function () {
+                const auditing_type = $(this).val();
+                const id = $("input[name='auditId']").val();
+                admin.req({
+                    moduleurl: "Tuihuo/manager_auditing",
+                    data: { auditing_type, id },
+                    done: (res) => {
+                        admin.layer(res.msg);
+                        layui.table.reload("LAY-user-back-returngood");
+                        layer.closeAll('page');
+                    }
+                })
+            });
+            //待仓库确认收货
+            $('.warehouse_btn button').click(function () {
+                const auditing_type = $(this).val();
+                const id = $("input[name='auditId']").val();
+                admin.req({
+                    moduleurl: "Tuihuo/warehouse_receipt_auditing",
+                    data: { auditing_type, id },
+                    done: (res) => {
+                        admin.layer(res.msg);
+                        layui.table.reload("LAY-user-back-returngood");
+                        layer.closeAll('page');
+                    }
+                })
+            });
+            //待出纳确认退款
+            $('.teller_btn button').click(function () {
+                const id = $("input[name='auditId']").val();
+                const tuihuo_true_amount = $("input[name='tuihuo_true_amount']").val();
+                const refund_bank = $("select[name='refund_bank']").val();
+                const retund_date = $("input[name='retund_date']").val();
+                admin.req({
+                    moduleurl: "Tuihuo/teller_refund_do",
+                    data: { id, tuihuo_true_amount, refund_bank, retund_date },
+                    done: (res) => {
+                        admin.layer(res.msg);
+                        layui.table.reload("LAY-user-back-returngood");
+                        layer.closeAll('page');
+                    }
+                })
+            });
+            //重排数量序号
+            function Recosting() {
+                var k = 1;
+                $("input[name='serial_number[]']").each(function () { $(this).attr('value', k); k = ++k; });
+            };
+            //删除行
+            $("body").on('click', '.layui-btn-danger', function () {
+                var elem = $(this).parent().parent();
+                elem.remove();
+                Recosting();
+                $.total_num_total();
+            });
+
+            //数量改变统计
+            $("body").on("input propertychange", ".quantity", function () {
+                var par_tr = $(this).parent().parent();
+                var t_quantity = par_tr.find(".quantity").val();
+                var t_unit_price = par_tr.find(".unit_price").val();
+                par_tr.find(".total_price").val((t_quantity * t_unit_price).toFixed(2));
+                $.total_num_total();
+            });
+            // 总数量  总金额
+            $.total_num_total = function () {
+                let num_total = 0;
+                let total_total = 0;
+                $(".quantity").each(function () {
+                    const n_total = parseInt($(this).val())
+                    if (!n_total) return 0
+                    num_total = parseInt(num_total + n_total)
+                });
+                $(".total_price").each(function () {
+                    const t_total = parseFloat($(this).val())
+                    if (!t_total) return 0
+                    total_total = parseFloat(total_total + t_total);
+                });
+                $('input[name="product_quantity"]').val(num_total);
+                $('input[name="order_product_amount').val((total_total).toFixed(2));
+            }
+
+            layui.data.sendParams = function (params) {
+                params = params;
+                orderById(params.id)
+            };
+
+        });
+    </script>
+    <script type="text/html" template lay-done="layui.data.sendParams(d.params)"></script>
+    <style>
+        #panel {
+            border: #d2d6de solid px;
+            border-radius: 10px;
+            margin: 10px 0px 10px 0px;
+            box-shadow: 0 0 10px rgb(168, 164, 164);
+        }
+
+        .display {
+            display: flex;
+            margin-bottom: 20px;
+            justify-content: flex-end;
+        }
+
+        .permission_btn {
+            display: none;
+        }
+    </style>
+</div>

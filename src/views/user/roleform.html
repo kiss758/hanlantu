@@ -1,0 +1,127 @@
+<div>添加控制角色</div>
+<div
+  class="layui-form"
+  lay-filter="layuiadmin-form-role"
+  style="padding: 20px 30px 0 0"
+>
+  <div class="layui-form-item">
+    <label class="layui-form-label">角色名称</label>
+    <div class="layui-input-block">
+      <input
+        type="text"
+        name="Rolename"
+        required
+        lay-verify="required"
+        placeholder="请输入标题"
+        autocomplete="off"
+        class="layui-input"
+      />
+    </div>
+  </div>
+
+  <input
+    type="hidden"
+    name="ID"
+    autocomplete="off"
+    class="layui-input"
+    value=""
+  />
+
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">角色说明</label>
+    <div class="layui-input-block">
+      <textarea
+        name="Description"
+        placeholder="请输入内容"
+        class="layui-textarea"
+      ></textarea>
+    </div>
+  </div>
+  <div>权限分配:</div>
+
+  <div id="item"></div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        lay-submit
+        lay-filter="LAY-user-role-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      form = layui.form,
+      admin = layui.admin;
+
+    getRolepersimmon();
+    // 得到角色权限列表
+    function getRolepersimmon() {
+      admin.req({
+        moduleurl: "Role/role_add",
+        async: false,
+        data: {},
+        done: (res) => {
+          const { Competence_list } = res.data;
+          var str = "";
+          $.each(Competence_list, function (i, v) {
+            var str = "";
+            str += `<div class="layui-form-item">
+                <label class="layui-form-label">${v.Cname}</label><input class="checkClass" title="顶级栏，如有选择下级务必选中" type="checkbox" name="Competence[]" value="${v.ID}" lay-skin="primary" ><div class="layui-input-block">`;
+            $.each(Competence_list[i].sidlist, function (ii, vv) {
+              str += `<input type="checkbox"  class="checkClass" name="Competence[]" value="${vv.ID}" lay-skin="primary" title="${vv.Cname}">`;
+            });
+            str += `</div></div>`;
+            $("#item").append(str);
+          });
+          form.render();
+        },
+      });
+    }
+
+    function editRoleForm(id) {
+      if (id == undefined || id == "") {
+        return false;
+      }
+      admin.req({
+        moduleurl: "Role/get_role",
+        async: false,
+        data: { ID: id },
+
+        done: (res) => {
+          const { Description, Rolename, ID, Competence } = res.data;
+          $("input[name='ID']").val(ID);
+          $("input[name='Rolename']").val(Rolename);
+          $("textarea[name='Description']").val(Description);
+          Competence.map((item) => {
+            $(".checkClass").each(function () {
+              const value = this.value;
+              if (value === item) {
+                $(this).prop("checked", true);
+                layui.form.render();
+              }
+            });
+          });
+          form.render();
+        },
+      });
+    }
+    layui.data.sendParams = function (params) {
+      params = params;
+      editRoleForm(params.ID);
+    };
+  });
+</script>
+
+<script
+  type="text/html"
+  template
+  lay-done="layui.data.sendParams(d.params)"
+></script>

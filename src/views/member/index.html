@@ -1,0 +1,136 @@
+<title>会员中心</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">会员中心</a>
+    <a><cite>会员管理</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <input name="start_end_time" type="text" class="layui-input" id="start_end_time" placeholder="选择日期" />
+        </div>
+
+        <div class="layui-inline">
+          <select name="department" id="department" lay-search=""></select>
+        </div>
+
+        <div class="layui-inline">
+          <select name="customersource" id="customersource_name" lay-search=""></select>
+        </div>
+
+        <div class="layui-inline">
+          <select name="belonging_id" id="belonging_id" lay-search=""></select>
+        </div>
+
+        <div class="layui-inline">
+          <select name="founder_id" id="founder_id" lay-search=""></select>
+        </div>
+
+        <div class="layui-inline">
+          <select name="buy">
+            <option value="">是否购买</option>
+            <option value="0">已购买</option>
+            <option value="1">未购买</option>
+          </select>
+        </div>
+
+        <div class="layui-inline">
+          <select name="member_level">
+            <option value="">会员级别</option>
+            <option value="A">A类-2019年10月1日~2021年4月30日</option>
+            <option value="B">B类-2018年10月1日~2019年9月30日</option>
+            <option value="C">C类-2018年10月以前</option>
+          </select>
+        </div>
+
+        <div class="layui-inline layui-col-sm4">
+          <input type="text" name="keyword" placeholder="请输入状态、订单编号、收货人、手机号码、套装信息关键字" autocomplete="off"
+            class="layui-input layui-col-sm4" />
+        </div>
+
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-search">
+            搜索
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+          <button class="layui-btn layuiadmin-btn-role" data-type="add">
+            添加
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="layui-card-body">
+      <table id="LAY-user-back-member" class="layui-table" lay-filter="LAY-user-back-member"></table>
+      <script type="text/html" id="table-useradmin-admin">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+        {{#  if(d.phone !=='' && d.province !==''){ }}
+          <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="downorder"
+          ><i class="layui-icon layui-icon-download-circle"></i>下单</a>
+        {{#  } }}
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+  layui
+    .use("member", layui.factory("member"))
+    .use(["admin", "member", "table"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form;
+
+      //事件
+      var active = {
+        add: function () {
+          admin.popup({
+            title: "添加会员信息",
+            area: ["60%", "80%"],
+            id: "LAY-popup-user-add",
+            success: function (layero, index) {
+              view(this.id)
+                .render("member/memberForm")
+                .done(function () {
+                  form.render(null, "layuiadmin-form-role");
+                  //监听提交
+                  form.on("submit(LAY-user-member-submit)", function (data) {
+                    var field = data.field;
+                    const belonging = $("#belonging_id_two").find("option:selected").text();
+                    window.sessionStorage.setItem("memberinfo", JSON.stringify(field))
+                    layer.confirm(`确定当前会员归属微信是:<span style="color:red;font-size:25px; font-weight:bold;">${belonging}</span>吗?`, {
+                      btn: ['我确定', '不对'] //按钮
+                    }, () => {
+                      admin.req({
+                        moduleurl: "Member/add_do",
+                        type: "POST",
+                        data: field,
+                        done: function (res) {
+                          layer.msg(`${res.msg}`, {
+                            offset: "15px",
+                            icon: 1,
+                            time: 2000,
+                          });
+                        },
+                      });
+                      layui.table.reload("LAY-user-back-member"); //重载表格
+                      layer.close(index); //执行关闭/
+                    })
+                  });
+                });
+            },
+          });
+        },
+      };
+      $(".layui-btn.layuiadmin-btn-role").on("click", function (res) {
+        var type = $(this).data("type");
+        active[type] ? active[type].call(this) : "";
+      });
+    });
+</script>
